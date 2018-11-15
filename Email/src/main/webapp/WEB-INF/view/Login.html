@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<base href="/Email/">
+		<meta charset="UTF-8">
+		<title>QQ登录</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/Login.css" />
+	</head>
+
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="col-md-5 col-md-push-7 models">
+						<div class="modal-header">
+							<h4 class="modal-title">邮箱登录</h4>
+						</div>
+						<div class="form-group form-horizontal input1">
+							<span class="col-md-2 text-center">账号：</span>
+							<div class="col-md-10">
+								<input type="text" class="form-control" id="number" placeholder="请输入您的账号/邮箱"/>
+								<br />
+								<label class="text-danger" id="messageNumber"></label>
+							</div>
+						</div>
+						<div class="form-group form-horizontal input2">
+							<span class="col-md-2 text-center">密码：</span>
+							<div class="col-md-10">
+								<input type="password" class="form-control" id="password" placeholder="请输入您的密码"/>
+								<br />
+								<label class="text-danger" id="messagePassword"></label>
+							</div>
+						</div>
+						<div class="form-group bnts">
+							<div class="col-md-8 col-md-offset-2">
+								<a href="javascript:void(0)" class="btn btn-success form-control" id="denglu">登录</a>
+							</div>
+						</div>
+						<div class="form-group ">
+							<div class="col-md-6 col-md-offset-4 lian">
+								<p>
+									<a href="/Email/User/zhuce">没有账号，注册</a>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 消息提示框 -->
+		<div id="alertDialog" class="modal fade" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button class="close" data-dismiss="modal">&times;</button>
+						<h6 class="modal-title">系统提示</h6>
+					</div>
+					<div class="modal-body">
+						<h5 class="text-center">message</h5>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" data-dismiss="modal">确认</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/jquery-1.8.2.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		//显示提示框
+		function fnShowAlert(msg,code) {
+			//模态框信息
+			$("#alertDialog").find(".modal-body h5").text(msg);
+			$("#alertDialog").modal(); //显示
+		
+		}
+		$(function() {
+			$(document).on("click", "#denglu",function() {
+
+				//账号
+				var number = $.trim($("#number").val());
+				//密码
+				var password = $.trim($("#password").val());
+
+				//判断账号非空
+				if(number.length == 0) {
+					$("#messageNumber").text("账号不能少于6个字符！！");
+					return;
+				} else {
+					$("#messageNumber").text("");
+				}
+
+				//判断密码非空
+				if(password.length == 0) {
+					$("#messagePassword").text("密码不能为空！");
+					return;
+				} else {
+					$("#messagePassword").text("");
+				}
+
+				
+
+				//提交
+				$.ajax("/Email/User/doLogin", {
+					type: "POST",
+					data: {
+						"number": number,
+						"password": password
+					},
+					success: function(json) {
+						location.href="/Email/Home/index";
+					}
+				});
+			});
+		});
+	</script>
+
+</html>

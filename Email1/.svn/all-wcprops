@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 28
+/svn/school/!svn/ver/4/Email
+END
+.classpath
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/school/!svn/ver/5/Email/.classpath
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/school/!svn/ver/5/Email/.project
+END
+pom.xml
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/school/!svn/ver/5/Email/pom.xml
+END

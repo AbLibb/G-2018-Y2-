@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC 
+"-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+    <!-- 核心配置文件 -->
+    <configuration>
+    	<properties resource="db.properties"></properties>
+    	<settings>
+    		<setting name="logImpl" value="LOG4J"/>
+    	</settings>
+    	
+<!--     	<typeAliases> -->
+<!--     		<typeAlias type="com.accp.domain.Attence" alias="Attence"/> -->
+<!--     	</typeAliases> -->
+    	<environments default="myenvironment">
+    		<environment id="myenvironment">
+    			<transactionManager type="JDBC"></transactionManager>
+    			<dataSource type="POOLED">
+    				<property name="username" value="${user}"/>
+    				<property name="password" value="${pwd}"/>
+					<property name="url" value="${url}"/>
+					<property name="driver" value="${driver}"/>
+    			</dataSource>
+    		</environment>
+    	</environments>
+    	<mappers>
+    		<mapper resource="mapper/StudentMapper.xml"/>
+    	</mappers>
+    </configuration>

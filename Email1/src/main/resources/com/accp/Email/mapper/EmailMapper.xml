@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.accp.Email.mapper.EmailMapper">
+<select id="login" resultType="com.accp.Email.pojo.Euser">
+   SELECT
+  `uid`,
+  `uname`,
+  `upwd`,
+  `sex`,
+  `emailno`,
+  `phone`,
+  `acronym`
+   FROM `email`.`euser`
+
+</select>
+
+<select id="zhuyeleft" resultType="com.accp.Email.pojo.Efolder">
+SELECT
+  `efid`,
+  `euid`,
+  `foldername`
+FROM `email`.`efolder` where `euid`=#{euid} or `euid` is null
+</select>
+
+<select id="getcount" resultType="int">
+SELECT COUNT(*) FROM erelation r JOIN efolder f ON f.`efid`=r.`efid` JOIN email m ON m.`esid`=r.`esid` WHERE (r.`receivercodeid`=#{euid} OR m.`senderid`=#{euid}) AND f.`efid`=#{efid}
+</select>
+<select id="getlajilist" resultType="com.accp.Email.pojo.Email">
+SELECT r.`receivercodeid`,m.`esid`,m.`title`,m.`senddate`,m.`senderid` FROM email m JOIN erelation r ON r.`esid`=m.`esid` JOIN efolder f ON f.`efid`=r.`efid` WHERE (m.`senderid`=#{uid} OR r.`receivercodeid`=#{uid}) AND f.`efid`=5 limit #{begin},#{size}
+</select>
+
+
+<select id="getlajicount" resultType="int">
+SELECT COUNT(*) FROM email m JOIN erelation r ON r.`esid`=m.`esid` JOIN efolder f ON f.`efid`=r.`efid` WHERE (m.`senderid`=#{uid} OR r.`receivercodeid`=#{uid}) AND f.`efid`=5
+
+</select>
+
+<select id="getfajian" resultType="com.accp.Email.pojo.Email">
+ SELECT r.`receivercodeid`,m.`esid`,m.`title`,m.`senddate` FROM email m JOIN erelation r ON r.`esid`=m.`esid` JOIN efolder f ON f.`efid`=r.`efid` WHERE m.`senderid`=#{senderid} AND f.`efid`=#{efid} limit #{begin},#{size}
+
+</select>
+
+
+<select id="getfajianone" resultType="com.accp.Email.pojo.Email">
+ SELECT r.`receivercodeid`,m.`esid`,m.`title`,m.`senddate`,r.`emailstatus` as emailstatus2 FROM email m JOIN erelation r ON r.`esid`=m.`esid` JOIN efolder f ON f.`efid`=r.`efid` WHERE m.`senderid`=#{senderid} AND f.`efid`=4 AND r.`esid`=#{esid}
+
+</select>
+
+
+<select id="getfajiancount" resultType="int">
+ SELECT count(*) FROM email m JOIN erelation r ON r.`esid`=m.`esid` JOIN efolder f ON f.`efid`=r.`efid` WHERE m.`senderid`=#{senderid} AND f.`efid`=#{efid} 
+</select>
+
+<select id="getname" resultType="com.accp.Email.pojo.Euser">
+SELECT * FROM euser WHERE uid=#{receivercodeid}
+</select>
+<update id="belaji">
+ UPDATE `email`.`erelation`  SET `efid` = #{efid} where `esid` = #{esid} and `efid`=4
+
+</update>
+
+<insert id="savewen">
+INSERT INTO `email`.`efolder`
+            (
+             `euid`,
+             `foldername`)
+VALUES (
+        #{euid},
+        #{foldername});
+
+</insert>
+
+<select id="getshoujian" resultType="com.accp.Email.pojo.Email" >
+
+SELECT m.`esid`,m.`content`,m.`title`,m.`senderid`,m.`senddate`,r.`emailstatus` as emailstatus2 FROM email m JOIN erelation r ON m.`esid`=r.`esid` 
+
+ WHERE  r.`receivercodeid`=#{receivercodeid} AND r.`efid`=3 limit #{begin},#{size}
+
+</select>
+
+<select id="getshoujianmohu" resultType="com.accp.Email.pojo.Email" >
+
+SELECT m.`esid`,m.`content`,m.`title`,m.`senderid`,m.`senddate`,r.`emailstatus` as emailstatus2 FROM email m JOIN erelation r ON m.`esid`=r.`esid` 
+
+ WHERE  r.`receivercodeid`=#{receivercodeid} AND r.`efid`=3 And m.senderid=#{uid} 
+
+</select>
+
+<select id="getshoujianmohucount" resultType="int">
+SELECT count(*) FROM email m JOIN erelation r ON m.`esid`=r.`esid` 
+
+ WHERE  r.`receivercodeid`=#{receivercodeid} AND r.`efid`=3 And m.senderid=#{uid}
+</select>
+
+
+
+<select id="getshoujiancount" resultType="int">
+SELECT count(*) FROM email m JOIN erelation r ON m.`esid`=r.`esid` 
+
+ WHERE  r.`receivercodeid`=#{receivercodeid} AND r.`efid`=3 
+</select>
+
+<select id="getone" resultType="com.accp.Email.pojo.Erelation">
+ SELECT
+  r.`Erid`,
+  r.`esid`,
+  r.`receivercodeid`,
+  r.`readdate`,
+  r.`emailstatus`,
+  r.`efid`,
+  r.`Booldel`,
+  r.`scicemail`
+FROM `email`.`erelation` r join email m  ON r.`esid`=m.`esid` where r.`esid`=#{esid} AND  m.`senderid`=#{euid} and r.`efid`=5
+
+
+ 
+</select>
+
+
+<select id="getone2" resultType="com.accp.Email.pojo.Erelation">
+ SELECT
+  r.`Erid`,
+  r.`esid`,
+  r.`receivercodeid`,
+  r.`readdate`,
+  r.`emailstatus`,
+  r.`efid`,
+  r.`Booldel`,
+  r.`scicemail`
+FROM `email`.`erelation` r join email m  ON r.`esid`=m.`esid` where r.`esid`=#{esid} AND  r.`receivercodeid`=#{euid} and r.`efid`=3
+
+
+ 
+</select>
+<select id="weidu" resultType="int">
+SELECT COUNT(*) FROM email m JOIN erelation r ON m.`esid`=r.`esid` 
+
+ WHERE  r.`receivercodeid`=#{uid} AND r.`efid`=#{efid} AND r.`emailstatus`=0
+
+</select>
+<update id="updateyd">
+UPDATE `email`.`erelation`
+SET 
+ 
+  
+  `readdate` = #{time},
+  `emailstatus` = 1
+ 
+  
+WHERE `Erid` = #{Erid} and`efid`=3;
+
+</update>
+
+<update id="updatewd">
+UPDATE `email`.`erelation`
+SET 
+ 
+  
+  `readdate` = #{time},
+  `emailstatus` = 0
+ 
+  
+WHERE `Erid` = #{Erid}  and `efid`=3;
+
+
+</update>
+
+
+<update id="updateyichu">
+UPDATE `email`.`erelation`
+
+ SET
+  `efid` = #{efid}
+ 
+WHERE `Erid` = #{Erid} and `efid`=5;
+
+
+</update>
+
+<update id="updateyichu2">
+UPDATE `email`.`erelation`
+
+ SET
+  `efid` = #{efid}
+ 
+WHERE `Erid` = #{Erid} and `efid`=3;
+
+
+</update>
+<select id="dellist" resultType="com.accp.Email.pojo.Erelation">
+SELECT
+  `Erid`,
+  `esid`,
+  `receivercodeid`,
+  `readdate`,
+  `emailstatus`,
+  `efid`,
+  `Booldel`,
+  `scicemail`
+FROM `email`.`erelation` where `esid`=#{esid}
+
+</select>
+<select id="delfjlist" resultType="com.accp.Email.pojo.Efile">
+SELECT
+  `efid`,
+  `esid`,
+  `fileurl`,
+  `filename`,
+  `filesize`
+FROM `email`.`efile` where `esid`=#{esid}
+</select>
+<delete id="delere">
+ DELETE
+FROM `email`.`erelation`
+WHERE `Erid` = #{Erid};
+
+</delete>
+<delete id="delfj">
+DELETE
+FROM `email`.`efile`
+WHERE `esid` = #{esid};
+</delete>
+<delete id="delemail">
+DELETE
+FROM `email`.`email`
+WHERE `esid` = #{esid};
+
+</delete>
+<select id="oo" resultType="int">
+SELECT COUNT(*) FROM erelation r JOIN efolder f ON f.`efid`=r.`efid` JOIN email m ON m.`esid`=r.`esid` WHERE (r.`receivercodeid`=#{receivercodeid} AND f.`efid`=#{efid})
+
+</select>
+
+<select id="ooo" resultType="int">
+SELECT COUNT(*) FROM erelation r JOIN efolder f ON f.`efid`=r.`efid` JOIN email m ON m.`esid`=r.`esid` WHERE (m.`senderid`=#{receivercodeid} AND f.`efid`=5)
+
+</select>
+<select id="mohuuser" resultType="com.accp.Email.pojo.Euser">
+SELECT
+  `uid`,
+  `uname`,
+  `upwd`,
+  `sex`,
+  `emailno`,
+  `phone`,
+  `acronym`
+FROM `email`.`euser` WHERE 1=1
+<if test="uname!=null and uname!=''">
+AND `uname` LIKE '%${uname}%' OR `acronym` LIKE '%${uname}%'
+</if>
+</select>
+
+
+<insert id="insert" parameterType="com.accp.Email.pojo.Euser">
+   		 insert into euser (uname, upwd, 
+      sex, emailno, phone, 
+      acronym)
+    values (#{uname,jdbcType=VARCHAR}, #{upwd,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=INTEGER}, #{emailno,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{acronym,jdbcType=VARCHAR})
+  </insert>
+
+
+
+<insert id="insertEmail" parameterType="com.accp.Email.pojo.Email" useGeneratedKeys="true" keyProperty="esid">
+  		INSERT INTO `email` (
+		  `title`,
+		  `content`,
+		  `senderid`,
+		  `getemail`,
+		  `emailstatus`,
+		  `senddate`
+		) 
+		VALUES
+		  (
+		    #{title},
+		    #{content},
+		    #{senderid},
+		    #{getemail},
+		    #{emailstatus},
+		    #{senddate}
+		  ) ;  		
+  	</insert>
+  	<insert id="insertErelation" parameterType="com.accp.Email.pojo.Erelation"> 
+  			INSERT INTO `erelation` (
+				  `esid`,
+				  `receivercodeid`,
+				  `emailstatus`,
+				  `efid`,
+				  `booldel`,
+				  `scicemail`
+				) 
+				VALUES
+				  (
+				    #{esid},
+				    #{receivercodeid},
+				    #{emailstatus},
+				    #{efid},
+				    #{booldel},
+				    #{scicemail}
+				  ) ;
+
+  	</insert>
+  	<insert id="insertEfile" parameterType="com.accp.Email.pojo.Efile" >
+  			INSERT INTO `efile` (
+			  `esid`,
+			  `filename`
+			) 
+			VALUES
+			  (
+			    #{esid},
+			    #{filename}
+			  ) ;		
+  	</insert>
+
+
+
+
+
+
+</mapper>

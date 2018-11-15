@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hz.email.mapper.EfolderMapper">
+ 	<select id="queryEfolder" resultType="Efolder">
+ 		SELECT * FROM `efolder` WHERE `euid` = #{uid} OR `euid` IS NULL ORDER BY euid
+ 	</select>
+ 	<select id="queryByEfid" resultType="Efolder">
+ 		SELECT * FROM `efolder` WHERE `efid` = #{efid}
+ 	</select>
+ 	<insert id="insertFolder">
+ 		INSERT INTO 
+ 			`qqemail`.`efolder` 
+ 			(
+ 				`euid`,
+ 			    `foldername`
+ 			 ) 
+		VALUES
+  			(
+  			    #{euid}, 
+  			    #{foldername}
+  			);
+ 	</insert>
+ 	<update id="updateEfolder" parameterType="Efolder">
+  			UPDATE 
+		 	 `qqemail`.`erelation`
+			SET
+		 	 `efid` = #{efid}
+       <where>  
+	        <foreach  collection="list" item="chk_value" open="erid in (" close=")" separator=",">   
+	            #{chk_value}  
+	        </foreach>  
+  	  </where>
+     </update>
+    
+</mapper>

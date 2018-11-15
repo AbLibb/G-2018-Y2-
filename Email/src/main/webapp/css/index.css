@@ -1,0 +1,234 @@
+	* {
+				margin: 0;
+				padding: 0;
+				font-size: 0.8rem;
+			}
+			
+			.la {
+				margin-top: 0.7rem;
+				padding-left: 4rem;
+				color: red;
+			}
+			.cc{
+				overflow-y: scroll;
+				height: 150px;
+			}
+			.input-group-addon {
+				text-align: left;
+			}
+			
+			header,
+			footer {
+				margin-top: 0px;
+				height: 7%;
+				background: #262626;
+			}
+			
+			section {
+				height: 80%;
+			}
+			
+			#texts {
+				height: 4rem;
+				line-height: 5rem;
+			}
+			
+			.mar {
+				
+			}
+			
+			#main {
+				/*margin:10px 0 0 0;*/
+				margin-top: 10px;
+			}
+			
+			#heads {
+				margin-top: 0.2rem;
+				margin-left: 0.5rem;
+				height: 4rem;
+				line-height: 4rem;
+				color: black;
+			}
+			
+			#heads_1 {
+				margin-top: 0.7rem;
+				margin-left: 75rem;
+			}
+			
+			#heads>p {
+				text-align: center;
+				font-size: 1.5rem;
+			}
+			
+			.list-group {
+				line-height: 2rem;
+			}
+			
+			.list-group>a>img {
+				margin-left: 0.5rem;
+				padding-left: 0.5rem;
+			}
+			
+			.tg {
+				padding: 5rem;
+			}
+			
+			.tg>.ss {
+				margin-top: 2rem;
+			}
+			
+			.adm {
+				margin-left: 5rem;
+				margin-top: 2rem;
+				margin-bottom: 3rem;
+				width: 40rem;
+			}
+			
+			.dis {
+				display: none;
+			}
+			
+			.show {
+				display: block;
+			}
+			
+			.time {
+				margin-bottom: 0.5rem;
+				margin-left: 2rem;
+				color: red;
+			}
+			
+			tr:hover {
+				background-color: #f3f3f3;
+			}
+			
+			.ss {
+				font-size: 1.5rem;
+			}
+			.input1{
+				margin-top: 1rem;;
+			}
+			.input1>span{
+				line-height: 3rem;
+				font-size: 1.6rem;
+				margin-left: 1.5rem;
+			}
+			.tongzhi{
+				height: 3.5rem;
+				
+				width: 100%;
+			}
+			.bnss{
+				border-radius: 10%;
+				margin-left: 3rem;
+				margin-top: 5px;
+			}
+			.haoyou{
+				 width: 27rem;
+				 height:34rem; 
+				 border:1px solid #adadad;
+				 position: fixed;
+				 right: 1rem;
+				 top:7rem;
+				 
+			}
+			.haoyou_1{
+				height: 4rem;
+				border:1px solid #adadad;
+				margin: 5px;
+				line-height: 4rem;
+				text-align: center;
+				
+			}
+			.haoyou_2{
+				height: 3rem;
+				border:1px solid #adadad;
+				margin: 5px;
+				line-height: 4rem;
+				text-align: center;
+				
+			}
+			.haoyouLi{
+				height: 25rem;
+				border:1px solid #adadad;
+				margin: 5px;
+				line-height: 4rem;
+				overflow-y: scroll;
+				
+			}
+			li{
+				margin-left:3rem;
+				list-style: none;
+			}
+			.shou_la{
+				font-weight: bold;
+				font-size: 1.7rem;
+				margin-top: 1rem;
+			}
+			.pagination{
+				position: fixed;
+				bottom: 30px;
+				
+			}
+			.twoheader{
+	margin-top: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background-color: #BCC2CD;
+	display: flex;
+	justify-content: flex-start;
+}
+.twoheader>button{
+	margin-left: 10px;
+}
+.huifuSection{
+	width: 100%;
+	height: 100%;
+	background-color: #F4F6F8;
+	padding-left: 20px;
+	padding-top: 10px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #9FA8B3;
+}
+.huifuSection>div:nth-of-type(1){
+	font-size: 18px;
+	font-weight: 600;
+	color: black;
+	margin-bottom: 5px;
+}
+.huifuSection>div{
+	font-size: 13px;
+	color: #7F7F7F;
+	margin-bottom: 5px;
+}
+.huifuSection .yx{
+	color: #5FA207;
+	font-weight: 700;
+}
+.huifuSection .na{
+	color: black;
+	font-weight: 700;
+	margin-right: 5px;
+}
+.content{
+	padding-top: 20px;
+	width: 100%;
+	background-color: #fffff;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #9FA8B3;
+}
+.huifu{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	width: 100%;
+	background-color: #F4F6F8;
+}
+.huifu>textarea{
+	margin-left: 20px;
+	width: 96%;
+	height: 100%;
+}
+#fj{
+	width: 100%;
+	background-color: #E6EAF0;
+}

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hz.email.mapper.EemailMapper">
+  	<!-- 收信箱条数 -->
+  	<select id="queryShou" resultType="int">
+  		SELECT COUNT(1) FROM `eemail` a 
+		JOIN  `erelation` b ON a.`esid` = b.`esid`
+		WHERE b.`receivercodeid` = #{uid} AND b.`efid` = #{efid}
+		<if test="emailstatus!=null and emailstatus!=''">
+			AND b.`emailstatus` = #{emailstatus}
+		</if>
+  	</select>
+  	<!-- 发信箱条数 -->
+  	<select id="queryFa" resultType="int">
+  		SELECT COUNT(1) FROM `eemail` a 
+		JOIN  `erelation` b ON a.`esid` = b.`esid`
+		WHERE b.`receivercodeid` = #{uid} AND b.`efid` = 4
+  	</select>
+  	<!-- 草稿箱条数 -->
+  	<select id="queryText" resultType="int">
+  		SELECT COUNT(1) FROM `eemail` a 
+		JOIN  `erelation` b ON a.`esid` = b.`esid`
+		WHERE b.`receivercodeid` = #{uid} AND b.`efid` = 6
+  	</select>
+  	<!-- 垃圾箱条数 -->
+  	<select id="queryDelete" resultType="int">
+  		SELECT COUNT(1) FROM `eemail` a 
+		JOIN  `erelation` b ON a.`esid` = b.`esid`
+		WHERE b.`receivercodeid` = #{uid} AND b.`efid` = 5
+  	</select>
+  	<!-- 垃圾箱条数 -->
+  	
+  	<insert id="insertEmail" parameterType="Eemail" useGeneratedKeys="true" keyProperty="esid">
+  		INSERT INTO `qqemail`.`eemail` (
+		  `title`,
+		  `content`,
+		  `senderid`,
+		  `getemail`,
+		  `emailstatus`
+		) 
+		VALUES
+		  (
+		  <if test="title!=null and title!=''">
+		  	 #{title},
+		  </if>
+		  <if test="content!=null and content!=''">
+		  	#{content},
+		  </if>
+		  <if test="senderid!=0">
+		  	 #{senderid},
+		  </if>
+		    #{getemail},
+		    #{emailstatus}
+		  ) ;  		
+  	</insert>
+  	<insert id="insertErelation" parameterType="Erelation"> 
+  			INSERT INTO `qqemail`.`erelation` (
+				  `esid`,
+				  `receivercodeid`,
+				  `emailstatus`,
+				  `efid`,
+				  `booldel`,
+				  `scicemail`
+				) 
+				VALUES
+				  (
+				    #{esid},
+				    #{receivercodeid},
+				    #{emailstatus},
+				    #{efid},
+				    #{booldel},
+				    #{scicemail}
+				  ) ;
+
+  	</insert>
+  	<insert id="insertEfile" parameterType="Efile" >
+  			INSERT INTO `qqemail`.`efile` (
+			  `esid`,
+			  `filename`
+			) 
+			VALUES
+			  (
+			    #{esid},
+			  <if test="filename!=null and filename!=''">
+			  	#{filename}
+			  </if>
+			    
+			  ) ;		
+  	</insert>
+  	
+  	
+  	 <select id="getEmail" resultMap="getMap">
+
+		SELECT
+		a.*,
+		euser.`uid` AS euser_uid,
+		euser.`uname`AS euser_uname,
+		euser.`upwd` AS euser_upwd,
+		euser.`sex` AS euser_sex,
+		euser.`emailno` AS euser_emailno,
+		euser.`phone` AS euser_phone,
+		euser.`acronym` AS euser_acronym
+		FROM (
+		SELECT eemail.*,
+		erelation.`erid` AS
+		erelation_erid,
+		erelation.`esid` AS
+		erelation_esid,
+		erelation.`receivercodeid` AS erelation_receivercodeid,
+		erelation.`readdate` AS erelation_readdate,
+		erelation.`emailstatus` AS
+		erelation_emailstatus,
+		erelation.`efid` AS erelation_efid,
+		erelation.`booldel` AS erelation_booldel,
+		erelation.`scicemail` AS
+		erelation_scicemail,
+		euser.*
+		FROM `eemail`
+		LEFT JOIN `erelation` ON
+		eemail.`esid`=erelation.`esid`
+		LEFT JOIN `euser` ON
+		erelation.`receivercodeid`=euser.`uid`
+		WHERE erelation.`scicemail`= #{scicemail}
+		AND `eemail`.`esid`=#{esid}
+		) AS a
+		LEFT JOIN euser ON
+		a.senderid=euser.`uid`
+	</select>
+
+<resultMap type="com.hz.email.pojo.Eemail" id="getMap">
+		<id column="esid" jdbcType="INTEGER" property="esid" />
+		<result column="title" jdbcType="VARCHAR" property="title" />
+		<result column="content" jdbcType="VARCHAR" property="content" />
+		<result column="senderid" jdbcType="INTEGER" property="senderid" />
+		<result column="getemail" jdbcType="INTEGER" property="getemail" />
+		<result column="senddate" jdbcType="TIMESTAMP" property="senddate" />
+		<result column="emailstatus" jdbcType="INTEGER" property="emailstatus" />
+		<association property="euser" javaType="Euser">
+			<id column="euser_uid" jdbcType="INTEGER" property="uid" />
+			<result column="euser_uname" jdbcType="VARCHAR" property="uname" />
+			<result column="euser_upwd" jdbcType="VARCHAR" property="upwd" />
+			<result column="euser_sex" jdbcType="INTEGER" property="sex" />
+			<result column="euser_emailno" jdbcType="VARCHAR" property="emailno" />
+			<result column="euser_phone" jdbcType="VARCHAR" property="phone" />
+			<result column="euser_acronym" jdbcType="VARCHAR" property="acronym" />
+		</association>
+		<collection property="erelations" ofType="Erelation">
+			<id column="erid" property="erelation_erid" />
+			<result property="esid" column="erelation_esid" />
+			<result property="receivercodeid" column="erelation_receivercodeid" />
+			<result property="readdate" jdbcType="TIMESTAMP" column="erelation_readdate" />
+			<result property="emailstatus" jdbcType="INTEGER" column="erelation_emailstatus" />
+			<result property="efid" jdbcType="INTEGER" column="erelation_efid" />
+			<result property="booldel" jdbcType="INTEGER" column="erelation_booldel" />
+			<result property="scicemail" jdbcType="INTEGER" column="erelation_scicemail" />
+			<association property="euser" javaType="Euser">
+				<id column="uid" jdbcType="INTEGER" property="uid" />
+				<result column="uname" jdbcType="VARCHAR" property="uname" />
+				<result column="upwd" jdbcType="VARCHAR" property="upwd" />
+				<result column="sex" jdbcType="INTEGER" property="sex" />
+				<result column="emailno" jdbcType="VARCHAR" property="emailno" />
+				<result column="phone" jdbcType="VARCHAR" property="phone" />
+				<result column="acronym" jdbcType="VARCHAR" property="acronym" />
+			</association>
+		</collection>
+	</resultMap>
+  	
+  	<insert id="HuizhiEmail" parameterType="Eemail" useGeneratedKeys="true" keyProperty="esid">
+  			INSERT INTO `qqemail`.`eemail` (
+			  `title`,
+			  `content`,
+			  `senderid`,
+			  `getemail`,
+			  `emailstatus`
+			) 
+			VALUES
+			  (
+		  		#{title},
+		  	    #{content},
+		  	    #{senderid},
+		        #{getemail},
+		        #{emailstatus}
+			  ) ;
+  	</insert>
+  	<insert id="HuiZhiErelation" parameterType="Erelation">
+  		INSERT INTO `qqemail`.`erelation` (
+		  `esid`,
+		  `receivercodeid`,
+		  `emailstatus`,
+		  `efid`,
+		  `booldel`,
+		  `scicemail`
+		) 
+		VALUES
+		  (
+            #{esid},
+		    #{receivercodeid},
+		    #{emailstatus},
+			#{efid},
+			#{booldel},
+			#{scicemail}
+		  ) ;
+
+  		
+  	</insert>
+  	<select id="selectFile" resultType="Efile">
+  		SELECT filename FROM `efile` WHERE esid = #{esid}
+  	</select>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<classPathEntry
+		location="D:\code\jar\mysqldriver\mysql-connector-java-5.1.0-bin.jar" />
+	<context id="context1">
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" /><!-- 是否取消注释 -->
+			<property name="suppressDate" value="true" /> <!-- 是否生成注释代时间戳 -->
+		</commentGenerator>
+		<jdbcConnection connectionURL="jdbc:mysql://localhost:3306/lmq"
+			driverClass="com.mysql.jdbc.Driver" password="admin" userId="root" />
+		<!-- 实体生成位置 -->
+		<javaModelGenerator targetPackage="com.accp.domain"
+			targetProject="java20-ssm" />
+		<!-- mapper配置文件生成 -->
+		<sqlMapGenerator targetPackage="mapper"
+			targetProject="java20-ssm" />
+		<!-- mapper接口生成 -->
+		<javaClientGenerator targetPackage="com.accp.mapper"
+			targetProject="java20-ssm" type="XMLMAPPER" />
+		<table schema="Module" tableName="module">
+
+		</table>
+		<table schema="Role" tableName="role">
+
+		</table>
+		<table schema="User" tableName="user">
+
+		</table>
+		<table schema="RoleModule" tableName="rolemodule">
+
+		</table>
+		<table schema="RoleUser" tableName="roleuser">
+
+		</table>
+	</context>
+</generatorConfiguration>

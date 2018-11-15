@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hz.email.mapper.ErelationMapper">
+
+ 	<resultMap type="com.hz.email.pojo.Erelation" id="ErelationMap">
+	<id property="erid" column="Aerid"/>
+	<result property="readdate" column="readdate"/>
+	<result property="emailstatus" column="emailstatus"/>
+	<result property="scicemail" column="bscicemail"/>
+	<association property="euser" javaType="Euser">
+		<id property="uid" column="cuid"/>
+		<result property="uname" column="cuname"/>
+	</association>
+	<!-- message的集合 -->
+ 	<collection property="EemailList" ofType="com.hz.email.pojo.Eemail">
+		<id property="esid" column="Berid"/>
+		<result property="content" column="content"/>
+		<result property="title" column="title"/>
+	</collection>
+	
+	</resultMap>
+	
+  	<select id="queryAll" resultMap="ErelationMap">
+  		SELECT
+  			 b.erid "Aerid",
+  			 a.`title` "title",
+  			 a.`content` "content",
+  			 a.`esid` "Berid",
+  			 b.`readdate` "readdate",
+  			 b.`emailstatus` "emailstatus",
+  			 b.`scicemail` "bscicemail",
+  			 c.`uname` "cuname",
+  			 c.`uid`  "cuid"
+  		FROM `eemail` a 
+		JOIN  `erelation` b ON a.`esid` = b.`esid`
+		JOIN  `euser` c ON a.`senderid` = c.`uid` 
+		WHERE b.`receivercodeid` = #{uid} AND b.`efid` = #{efid} AND b.`booldel` = 0 
+		<if test="emailstatus!=null and emailstatus!=''">
+			AND a.`emailstatus` = #{emailstatus}
+		</if>
+		<if test="emailstatus==null">
+			AND a.`emailstatus` = 0
+		</if>
+		<if test="title!=null and title!=''">
+			AND a.`title` like '%${title}%' AND a.`content` like '%${title}%' 
+		</if>
+		ORDER BY b.`readdate` DESC
+		limit #{begin},#{size}
+  	</select>
+  	
+  	<select id="queryCount" resultType="int">
+  		SELECT
+  			COUNT(1)
+  		FROM `eemail` a 
+		JOIN  `erelation` b ON a.`esid` = b.`esid`
+		WHERE b.`receivercodeid` = #{uid} AND b.`efid` = #{efid} AND b.`booldel` = 0 AND a.`emailstatus` = 0
+		<if test="title!=null and title!=''">
+			AND a.`title` like '%${title}%' AND a.`content` like '%${title}%' 
+		</if>
+		<if test="emailstatus!=null and emailstatus!=''">
+			AND a.`emailstatus` = #{emailstatus}
+		</if>
+		<if test="emailstatus==null">
+			AND a.`emailstatus` = 0
+		</if>
+  	</select>
+  	<update id="delete">
+  			UPDATE 
+		 	 `qqemail`.`erelation`
+			SET
+		 	 `efid` = 5
+		 	 WHERE
+  		 <foreach item="chk_value" collection="array" open="erid in ("
+            separator="," close=")">
+            #{chk_value}
+        </foreach>
+  	</update>
+  	<update id="yidu">
+  			UPDATE 
+		 	 `qqemail`.`erelation`
+			SET
+		 	 `emailstatus` = 2
+		 	 WHERE
+  		 <foreach item="chk_value" collection="array" open="erid in ("
+            separator="," close=")">
+            #{chk_value}
+        </foreach>
+  	</update>
+  	<update id="weidu">
+  			UPDATE 
+		 	 `qqemail`.`erelation`
+			SET
+		 	 `emailstatus` = 1
+		 	 WHERE
+  		 <foreach item="chk_value" collection="array" open="erid in ("
+            separator="," close=")">
+            #{chk_value}
+        </foreach>
+  	</update>
+</mapper>
